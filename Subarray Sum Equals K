@@ -1,4 +1,84 @@
 Subarray Sum Equals K
 
+brute force ::
 
+calculate every possible subarraysum and compare it with k and save the count 
+int subarraySum(vector<int>& nums, int X) {
+        int cnt=0;
+        for(int i=0;i<nums.size();i++){
+            for(int j=0;j<=i;j++){
+                int sum=0;
+                for(int k=j;k<=i;k++){
+                    sum+=nums[k];
+                    cout<<nums[k]<<" ";
+                }
+                cout<<" : "<<sum<<endl;
+                if(sum==X){cnt++;}
+            }
+        }
 
+        return cnt;
+    }
+	
+	Time Complexity: O(N^3)
+	
+	
+	
+	
+	Better approach :
+	
+	run 2 loops first (i) from 0 to n and the nested (j) from i to n . that is taking all the possible subarraya from index i to teh end of the array and calculating the sum in process
+	if sum==k then increase the count. 
+	
+	 int subarraySum(vector<int>& nums, int X) {
+        int cnt=0;
+        for(int i=0;i<nums.size();i++){
+            int sum=0;
+            for(int j=i;j<nums.size();j++){
+                sum+=nums[j];
+                if(sum==X){cnt++;}
+            }
+        }
+
+        return cnt;
+    }
+	
+	Time compplexity : O(N^2)
+	
+	
+	
+	
+	
+	
+	
+	Optimal Approach:
+we will use prefix sum. we will calculate the sum in process and we will observe if exists any subarray with sum = sum-k. and add its occurence to our count variable. as number of possible sum-k means number of possible k.
+and then we will update the occurence of sum into the hashmap.
+
+code :
+
+  int subarraySum(vector<int>& nums, int k) {
+        map<int,int> mp;
+        int presum=0;
+        int cnt=0;
+        mp[0]=1;
+        for(int i=0;i<nums.size();i++){
+            // Adding the sum
+            presum+=nums[i];
+            
+            // bringing out the sum-k to look for in the map
+            int remove = presum-k;
+         
+            // counting occurence of sum-k as: 
+            // occurence sum-k = occurence of k
+            cnt+=mp[remove];
+            
+            // updating the occurence of presum
+            mp[presum]++;
+        }
+        return cnt;
+    }
+	
+	
+time complexity : O(N * log N ) if ordered map
+			      O(N * N ) if unordered map(worst case)

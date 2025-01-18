@@ -26,3 +26,36 @@ Optimised solution:
 
 Using Prefix sum
 
+
+// Because using % directly will not handle negative 
+int mod(int &a, int &b){
+        int re= a%b;
+        if(re<0){
+            re+=b;
+        }
+        return re;
+    } 
+    int subarraysDivByK(vector<int>& a, int k) {
+        int cnt=0;
+        long sum=0;
+        for(auto i:a){
+            sum+=i;
+        }
+        int target= sum%k;
+        int n=a.size();
+        map<int,int> mp;
+        mp[0]=1;
+        
+        int presum=0;
+        for(int i=0;i<n;i++){
+            presum +=a[i];
+
+            int needed = mod(presum,k);
+
+            if(mp.find(needed)!=mp.end()){
+                cnt+=mp[needed];
+            }       
+            mp[needed]++;
+        }
+        return cnt;
+    }

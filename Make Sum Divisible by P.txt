@@ -25,3 +25,35 @@ int minSubarray(vector<int>& nums, int p) {
         if(mincnt==INT_MAX){mincnt=-1;}
         return mincnt;
     }
+
+
+
+optimal approach:
+Prefix sum approach
+
+
+int minSubarray(vector<int>& nums, int p) {
+       long sum=0;
+        int n=nums.size();
+        for(auto i:nums){
+            sum+=i;
+        }
+        int t= sum%p;
+        if(t==0){return 0;}
+        int mini = n;
+     
+        map<int,int> mp;
+        mp[0]=-1;
+        long presum = 0;
+        for(int i=0;i<nums.size();i++){
+            presum=(presum+nums[i])%p;
+            int needed = (presum-t+p)%p;
+            if(mp.find(needed)!=mp.end()){
+                mini = min(mini,i-mp[needed]);
+            }
+            mp[presum] = i;
+        }
+        if(mini == nums.size()){return -1;}
+        return mini;
+    }
+

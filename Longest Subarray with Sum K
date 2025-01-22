@@ -1,0 +1,20 @@
+Longest Subarray with Sum K
+
+    int longestSubarray(vector<int>& a, int k) {
+        unordered_map<int,int> mp;
+        int n=a.size();
+        int presum=0;
+        mp[0]=-1;
+        int maxi=0;
+        for(int i=0;i<n;i++){
+            presum+=a[i];
+            if(mp.find(presum-k)!=mp.end()){
+               maxi = max(maxi,i-mp[presum-k]); 
+            }
+            if(mp.find(presum)==mp.end()){
+                mp[presum]=i;}
+        }
+        return maxi;
+    }
+
+

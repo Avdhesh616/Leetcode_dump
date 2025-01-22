@@ -1,0 +1,27 @@
+O(N)
+
+
+    int minOperations(vector<int>& a, int x) {
+        long sum=0;
+        for(auto i:a){
+            sum+=i;
+        }
+        int n=a.size();
+        int t=sum-x;
+        if(t==0){return n;}
+        unordered_map<int,int> mp;
+        long presum=0;
+        int maxi=-1;
+        mp[0]=-1;
+        for(int i=0;i<n;i++){
+            presum+=a[i];
+             
+            int ndd = presum-t;
+            if(mp.find(ndd)!=mp.end()){
+                maxi = max(maxi,i-mp[ndd]);
+            }
+            if(mp.find(presum)==mp.end()){
+            mp[presum]=i;}
+        }
+        return (maxi==-1)?-1:n-maxi;
+    }

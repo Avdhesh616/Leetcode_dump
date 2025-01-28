@@ -1,0 +1,32 @@
+Similar like find sum in subarray.
+The brute force takes 3 loops and counting in process. 
+O(N^3) will be the complexity. 
+
+OPtimal approach
+Can be done in close to O(N) using prefix and hashmap. with O(N) space.
+
+You have to use this idea. first convert all odds to 1 and evens to 0 . then k becomes your sum to find out. hence no issues further. You can treat
+it as Find possible sum =k subarray.
+
+code :
+
+int numberOfSubarrays(vector<int>& nums, int k) {
+        int n=nums.size();
+        for(int i=0;i<n;i++){
+            if(nums[i]%2==0){nums[i]=0;}
+            else{nums[i]=1;}
+        }
+        int cnt=0;
+        unordered_map<int,int> mp;
+        mp[0]=1;
+        int sum=0;
+        for(int i=0;i<n;i++){
+            sum+=nums[i];
+            if(mp.find(sum-k)!=mp.end()){
+                cnt+=mp[sum-k];
+            }
+            mp[sum]++;
+        }
+        return cnt;
+    }
+
